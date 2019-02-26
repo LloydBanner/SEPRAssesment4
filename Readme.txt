@@ -1,2 +1,3 @@
-Original game by Geese Lightning
-Extended by Yeezy Games
+Original code by Geese Lightning
+Game finished by Yeezy Games
+New requirements added by Shaun of the Devs
