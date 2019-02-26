@@ -141,7 +141,6 @@ public class MiniZombie {
 		mouseY = -(Gdx.input.getY()-720);
 	
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			MiniGame.trigger = MiniGame.timer;
 			return aimingAt();
 		} else {
 			return false;

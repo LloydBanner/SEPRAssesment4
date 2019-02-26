@@ -89,12 +89,13 @@ public class MiniGame implements Screen {
 		timer = MiniZombie.timer();
 		
 		if(timer > last+rand) {
-			rand = Math.round(Math.random());
+			// Changed by Shaun of the Devs to increas difficulty over time
+			rand = Math.round(Math.random()*(kills/10));
 			
 			for(int z = 0; z <= rand; z++) {
 				ZombieQueue.addFirst(new MiniZombie(zombieTexture));
 			}
-			rand = Math.round(Math.random()*0.5);
+			rand = Math.round((Math.random()*0.5));
 			last = timer;
 		}
 	}
@@ -252,10 +253,13 @@ public class MiniGame implements Screen {
             	isVisible(tempZombie, i);     	
             	if(tempZombie.getDamage() && reloaded) {   		
             		kills++;
-            		trigger = timer;		
+            		trigger = timer;
             		ZombieQueue.removeIndex(i);
-            	}
-            	else {  		
+            	// Added by Shaun of the Devs to allow the player to miss the zombie
+            	} else if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && reloaded) {
+            		trigger = timer;
+            		tempZombie.render(spriteBatch);
+            	} else {  		
             		tempZombie.render(spriteBatch);
             	}      	
             }	
