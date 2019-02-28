@@ -62,7 +62,7 @@ public class Zombie extends Character {
 
         body.setFixedRotation(true);
         body.setLinearDamping(50f);
-        // Added to allow spped change
+        // Added by Shaun of the Devs to allow speed change
         setMaxLinearSpeed(speed);
         setCharacterPosition(zombieSpawn);
 
