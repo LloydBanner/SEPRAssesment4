@@ -62,9 +62,11 @@ public class Zombie extends Character {
 
         body.setFixedRotation(true);
         body.setLinearDamping(50f);
+        // Added to allow spped change
+        setMaxLinearSpeed(speed);
         setCharacterPosition(zombieSpawn);
 
-        hitRange = (int) (Constant.ZOMBIERANGE*getWidth()/30 - getWidth()*getHealth()/1200);
+        hitRange = (int) (Constant.ZOMBIERANGE*getWidth()/25 - getWidth()*getHealth()/1200);
     }
 
     /**
