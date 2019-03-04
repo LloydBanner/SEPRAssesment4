@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.geeselightning.zepr.Zombie.Type;
 import com.geeselightning.zepr.powerups.*;
 import com.geeselightning.zepr.screens.TextScreen;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Level implements Screen {
     private int currentWaveNumber;
     private int zombiesRemaining; // the number of zombies left to kill to complete the wave
     private int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
+    private int nonZombiesToSpawn; // Added by Shaun of the Devs for non zombie spawning
     private PowerUp currentPowerUp;
     //private Box2DDebugRenderer debugRenderer;
     private LevelConfig config;
@@ -155,14 +157,16 @@ public class Level implements Screen {
 
 
     /**
-     * Spawns multiple zombies cycling through spawnPoints until the given amount have been spawned.
+     * Spawns multiple zombies and nonZombies cycling through spawnPoints until the given amount have been spawned.
      * @param spawnPoints locations where zombies should be spawned on this stage
      * @param numberToSpawn number of zombies to spawn
+     * @param waveType the type of zombies/nonZombies in the wave
      */
-    private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints) {
+    private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, Type waveType) {
 
+    	// Modified by Shaun of the Devs to allow different wave types to spawn 
         for (int i = 0; i < numberToSpawn; i++) {
-            Zombie.Type type = config.waves[currentWaveNumber-1].zombieType;
+            Zombie.Type type = waveType;
             Zombie zombie = new Zombie(spawnPoints.get(i % spawnPoints.size()), world, type);
             if (zombie.isZombie) {
             	aliveZombies.add(zombie);
@@ -171,8 +175,8 @@ public class Level implements Screen {
             }
             if(type == Zombie.Type.BOSS2 && aliveZombies.size()==1)
                 originalBoss = zombie;
+        }
     }
-}
 
     /**
      * Converts the mousePosition which is a Vector2 representing the coordinates of the mouse within the game window
@@ -483,7 +487,7 @@ public class Level implements Screen {
                 if (currentWaveNumber < config.waves.length) {
                     // Update zombiesRemaining with the number of zombies of the new wave
                     zombiesRemaining = config.waves[currentWaveNumber].numberToSpawn;
-
+                    nonZombiesToSpawn = config.nonZombieWaves[currentWaveNumber].numberToSpawn;
                 } else
                     zombiesRemaining = 0;
 
@@ -493,8 +497,12 @@ public class Level implements Screen {
 
             zombiesToSpawn = zombiesRemaining;
 
+            // Changed by Shaun of the Devs to spawn nonZombies separately from Zombies
             // Spawn all zombies in the stage
-            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints);
+            if (config.waves.length >= currentWaveNumber) {
+            	spawnZombies(zombiesToSpawn, config.zombieSpawnPoints, config.waves[currentWaveNumber-1].zombieType);
+            	spawnZombies(nonZombiesToSpawn, config.nonZombieSpawnPoints, config.nonZombieWaves[currentWaveNumber-1].zombieType);
+            }
         }
 
         //Teleporting and minon spawning behavior for boss2

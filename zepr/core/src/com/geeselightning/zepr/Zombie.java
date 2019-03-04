@@ -40,7 +40,7 @@ public class Zombie extends Character {
         setMaxLinearSpeed(speed);
         setCharacterPosition(zombieSpawn);
 
-        hitRange = (int) (Constant.ZOMBIERANGE*getWidth()/25 - getWidth()*getHealth()/1200);
+        hitRange = (int) (Constant.ZOMBIERANGE*getScaleX()*getWidth()/25 - getWidth()*getHealth()/1200);
     }
     
     // Moved to method by Shaun of the Devs to make type changing easier
@@ -70,21 +70,21 @@ public class Zombie extends Character {
     		case NONZOMBIE1:
     			speed *= 1;
     			attackDamage *= 1;
-    			maxhealth *= 1;
+    			maxhealth *= 0.5;
     			isZombie = false;
     			setTexture(new Texture("player01.png"));
         		break;
     		case NONZOMBIE2:
     			speed *= 1.2f;
     			attackDamage *= 2;
-    			maxhealth *= 2;
+    			maxhealth *= 1;
     			isZombie = false;
     			setTexture(new Texture("player02.png"));
     			break;
     		case NONZOMBIE3:
     			speed *= 2;
     			attackDamage *= 3;
-    			maxhealth *= 1;
+    			maxhealth *= 0.5;
     			isZombie = false;
     			setTexture(new Texture("player03.png"));
     			break;
@@ -94,6 +94,7 @@ public class Zombie extends Character {
                 maxhealth *= 5;
                 isZombie = true;
                 setTexture(new Texture("GeeseLightningBoss.png"));
+                setScale(2);
                 break;
             case BOSS2:
                 speed *= 60;
@@ -101,6 +102,7 @@ public class Zombie extends Character {
                 maxhealth *= 5;
                 isZombie = true;
                 setTexture(new Texture("JJBossZombie.png"));
+                setScale(2);
                 break;
     	}
     	
@@ -162,10 +164,10 @@ public class Zombie extends Character {
             this.currentMode = SteeringState.SEEK;
             // update direction to face the player
             direction = getDirectionTo(closestAttackable.getCenter());
-        } else if(!isZombie){
-            this.steeringBehavior = SteeringPresets.getSeek(this, Level.getPlayer());
-            this.currentMode = SteeringState.SEEK;
-            direction = getDirectionTo(Level.getPlayer().getCenter());
+        } else if((closestAttackable != null) && !isZombie){
+            this.steeringBehavior = SteeringPresets.getEvade(this, closestAttackable);
+            this.currentMode = SteeringState.EVADE;
+            direction = -(this.vectorToAngle(this.getLinearVelocity()));
         }else { //player cannot be seen, so wander randomly
             this.steeringBehavior = SteeringPresets.getWander(this);
             this.currentMode = SteeringState.WANDER;

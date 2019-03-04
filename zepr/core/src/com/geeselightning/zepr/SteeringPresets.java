@@ -1,5 +1,6 @@
 package com.geeselightning.zepr;
 
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.*;
 import com.badlogic.gdx.ai.steer.limiters.LinearAccelerationLimiter;
 import com.badlogic.gdx.math.MathUtils;
@@ -51,4 +52,9 @@ public class SteeringPresets {
                 .setDecelerationRadius(10f);
         return arrive;
     }
+
+	public static SteeringBehavior<Vector2> getEvade(Character runner, Character target) {
+        Evade<Vector2> evade = new Evade<>(runner, target);
+        return evade;
+	}
 }

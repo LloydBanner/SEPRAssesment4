@@ -14,4 +14,7 @@ public class LevelConfig {
     // Defining the waves of zombies to be spawned
     Wave[] waves;
     Zepr.Location location;
+    // nonZombie info added by Shaun of the Devs
+	ArrayList<Vector2> nonZombieSpawnPoints;
+	Wave[] nonZombieWaves;
 }

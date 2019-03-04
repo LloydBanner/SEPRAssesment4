@@ -60,6 +60,11 @@ public class Zepr extends Game {
                                         new Wave(10, Zombie.Type.ZOMBIE1),
                                         new Wave(20, Zombie.Type.ZOMBIE1)};
 					location = screen;
+					nonZombieSpawnPoints = new ArrayList<>(
+				            Arrays.asList(new Vector2(550, 650)));
+					nonZombieWaves = new Wave[]{ new Wave(5, Zombie.Type.NONZOMBIE1),
+                            new Wave(1, Zombie.Type.NONZOMBIE2),
+                            new Wave(2, Zombie.Type.NONZOMBIE3)};
 				}};
 				level = new Level(this, config);
 				setScreen(level);
@@ -76,6 +81,11 @@ public class Zepr extends Game {
                                         new Wave(15, Zombie.Type.ZOMBIE1),
                                         new Wave(20, Zombie.Type.ZOMBIE2)};
 					location = screen;
+					nonZombieSpawnPoints = new ArrayList<>(
+				            Arrays.asList(new Vector2(350, 350)));
+					nonZombieWaves = new Wave[]{ new Wave(5, Zombie.Type.NONZOMBIE1),
+                            new Wave(1, Zombie.Type.NONZOMBIE2),
+                            new Wave(2, Zombie.Type.NONZOMBIE3)};
 				}};						 
 				level = new Level(this, config);
 				setScreen(level);
@@ -92,6 +102,11 @@ public class Zepr extends Game {
                                         new Wave(17, Zombie.Type.ZOMBIE2),
                                         new Wave(1, Zombie.Type.BOSS1)};
 					location = screen;
+					nonZombieSpawnPoints = new ArrayList<>(
+				            Arrays.asList(new Vector2(50, 850)));
+					nonZombieWaves = new Wave[]{ new Wave(5, Zombie.Type.NONZOMBIE1),
+                            new Wave(1, Zombie.Type.NONZOMBIE2),
+                            new Wave(2, Zombie.Type.NONZOMBIE3)};
 				}};						 
 				level = new Level(this, config);
 				setScreen(level);
@@ -109,6 +124,12 @@ public class Zepr extends Game {
                                         new Wave(12, Zombie.Type.ZOMBIE3),
                                         new Wave(16, Zombie.Type.ZOMBIE3)};
 					location = screen;
+					nonZombieSpawnPoints = new ArrayList<>(
+				            Arrays.asList(new Vector2(360, 350)));
+					nonZombieWaves = new Wave[]{ new Wave(5, Zombie.Type.NONZOMBIE1),
+                            new Wave(1, Zombie.Type.NONZOMBIE2),
+                            new Wave(2, Zombie.Type.NONZOMBIE3),
+                            new Wave(2, Zombie.Type.NONZOMBIE3)};
 				}};
 				level = new Level(this, config);
 				setScreen(level);
@@ -125,6 +146,11 @@ public class Zepr extends Game {
                                         new Wave(20, Zombie.Type.ZOMBIE3),
                                         new Wave(30, Zombie.Type.ZOMBIE3)};
 					location = screen;
+					nonZombieSpawnPoints = new ArrayList<>(
+				            Arrays.asList(new Vector2(450, 100)));
+					nonZombieWaves = new Wave[]{ new Wave(5, Zombie.Type.NONZOMBIE1),
+                            new Wave(1, Zombie.Type.NONZOMBIE2),
+                            new Wave(2, Zombie.Type.NONZOMBIE3)};
 				}};
 				level = new Level(this, config);
 				setScreen(level);
@@ -142,6 +168,12 @@ public class Zepr extends Game {
                                         new Wave(20, Zombie.Type.ZOMBIE3),
                                         new Wave(1, Zombie.Type.BOSS2)};
 					location = screen;
+					nonZombieSpawnPoints = new ArrayList<>(
+				            Arrays.asList(new Vector2(320, 350)));
+					nonZombieWaves = new Wave[]{ new Wave(5, Zombie.Type.NONZOMBIE1),
+                            new Wave(1, Zombie.Type.NONZOMBIE2),
+                            new Wave(2, Zombie.Type.NONZOMBIE3),
+                            new Wave(2, Zombie.Type.NONZOMBIE3)};
 				}};	
 				level = new Level(this, config);
 				setScreen(level);
