@@ -34,6 +34,7 @@ public class Level implements Screen {
     private OrthographicCamera camera;
     private static Player player;
     private ArrayList<Zombie> aliveZombies;
+    private ArrayList<Zombie> nonZombies; //Added by Shaun of the Devs
     private ZeprInputProcessor inputProcessor;
     private boolean isPaused;
     private Stage stage;
@@ -71,6 +72,7 @@ public class Level implements Screen {
         
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         aliveZombies = new ArrayList<>();
+        nonZombies = new ArrayList<>();
         inputProcessor = new ZeprInputProcessor();
         
         progressLabel = new Label("", skin);
@@ -162,7 +164,11 @@ public class Level implements Screen {
         for (int i = 0; i < numberToSpawn; i++) {
             Zombie.Type type = config.waves[currentWaveNumber-1].zombieType;
             Zombie zombie = new Zombie(spawnPoints.get(i % spawnPoints.size()), world, type);
-            aliveZombies.add(zombie);
+            if (zombie.isZombie) {
+            	aliveZombies.add(zombie);
+            } else {
+            	nonZombies.add(zombie);
+            }
             if(type == Zombie.Type.BOSS2 && aliveZombies.size()==1)
                 originalBoss = zombie;
     }
@@ -264,6 +270,35 @@ public class Level implements Screen {
         	tutorialTable.add(tutorialLabel).top();
         }
     }
+    
+    // Added by Shaun of the Devs to determine who each character should attack
+    public Character getClosestAttackable(boolean isZombie, Character attacker) {
+        ArrayList<Character> attackable = new ArrayList<>();
+    	if (isZombie) {
+            for (Zombie nonZombie : nonZombies) {
+            	attackable.add(nonZombie);
+            }
+            if (player.isVisible()) {
+            	attackable.add(player);
+            }
+    	} else {
+            for (Zombie zombie : aliveZombies) {
+            	attackable.add(zombie);
+            }
+    	}
+    	float closestDistance = 100000000; 
+    	Character closestChar = null;
+    	for (Character character : attackable) {
+    		 float xDistance = attacker.getPosition().x - character.getPosition().x;
+    		 float yDistance = attacker.getPosition().y - character.getPosition().y;
+    		 float distance = (float) Math.sqrt(Math.pow(yDistance, 2) + Math.pow(xDistance, 2));
+    		 if (closestDistance > distance) {
+    			 closestDistance = distance;
+    			 closestChar = character;
+    		 }
+    	}
+    	return closestChar;
+    }
 
     /**
      * Render the level and its contents to the screen
@@ -299,6 +334,10 @@ public class Level implements Screen {
                 // Draw zombies
                 for (Zombie zombie : aliveZombies)
                     zombie.draw(batch);
+                
+                // Added by Shaun of the Devs to draw nonZombies
+                for (Zombie nonZombie : nonZombies)
+                    nonZombie.draw(batch);
 
                 if (currentPowerUp != null) {
                     // Activate the powerup up if the player moves over it and it's not already active
@@ -349,7 +388,7 @@ public class Level implements Screen {
         for(int i = 0; i < aliveZombies.size(); i++) {
             Zombie zomb = aliveZombies.get(i);
             zomb.update(delta);
-
+            
             if (zomb.getHealth() <= 0) {
                 zombiesRemaining--;
                 aliveZombies.remove(zomb);
@@ -362,12 +401,42 @@ public class Level implements Screen {
         // Resolve all possible attacks
         for (Zombie zombie : aliveZombies) {
             // Zombies will only attack if they are in range, the attack has cooled down, and they are
+            // facing a player or nonZombie.
+            // Player will only attack in the reverse situation but player.attack must also be true. This is
+            //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
+
+        	//Changed by Shaun of the Devs to accomodate nonZombies
+            zombie.closestAttackable = getClosestAttackable(true, zombie);
+        		
+            if (player.isAttackReady())
+                player.attack(zombie, delta);
+            if(zombie.closestAttackable != null)
+            	zombie.attack(zombie.closestAttackable, delta);
+        }
+        
+        // Added by Shaun of the Devs for nonZombies
+        for(int i = 0; i < nonZombies.size(); i++) {
+            Zombie zomb = nonZombies.get(i);
+            zomb.update(delta);
+            
+            if (zomb.getHealth() <= 0) {
+            	zomb.health = zomb.maxhealth;
+            	zomb.switchType();
+                nonZombies.remove(zomb);
+                aliveZombies.add(zomb);
+            }
+        }
+        
+        // Added by Shaun of the Devs for nonZombies
+        for (Zombie zombie : nonZombies) {
+            // Zombies will only attack if they are in range, the attack has cooled down, and they are
             // facing a player.
             // Player will only attack in the reverse situation but player.attack must also be true. This is
             //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
-            if (player.isAttackReady())
-                player.attack(zombie, delta);
-            zombie.attack(player, delta);
+            zombie.closestAttackable = getClosestAttackable(false, zombie);
+        	
+            if(zombie.closestAttackable != null)
+            	zombie.attack(zombie.closestAttackable, delta);
         }
 
         if (zombiesRemaining == 0) {
