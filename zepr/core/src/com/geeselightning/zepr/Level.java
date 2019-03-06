@@ -397,6 +397,7 @@ public class Level implements Screen {
             zomb.update(delta);
             
             // Added by Shaun of the Devs to cure zombies with power up
+            // Cures zombies in a small area around the cure power up 
             if (toCure) {
             	if (!zomb.isBoss()) {
             		if (Math.abs(zomb.getX() - cureLocation[0]) < 100) {
