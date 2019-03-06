@@ -32,8 +32,6 @@ public class Zombie extends Character {
 		set(new Sprite(new Texture("zombie01.png")));
         setType();
 
-        health = maxhealth;
-
         body.setFixedRotation(true);
         body.setLinearDamping(50f);
         // Added by Shaun of the Devs to allow speed change
@@ -105,7 +103,8 @@ public class Zombie extends Character {
                 setScale(2);
                 break;
     	}
-    	
+
+        health = maxhealth;
     }
     
     // Added by Shaun of the Devs
@@ -132,6 +131,20 @@ public class Zombie extends Character {
     			break;
     	}
     	setType();
+    }
+    
+    /**
+     * Added by Shaun of the Devs to stop type switching on bosses
+     * @return if zombies is a boss
+     */
+    public boolean isBoss() {
+    	switch(currentType) {
+    		case BOSS1:
+    			return true;
+    		case BOSS2:
+    			return true;
+    	}
+		return false;
     }
 
     /**

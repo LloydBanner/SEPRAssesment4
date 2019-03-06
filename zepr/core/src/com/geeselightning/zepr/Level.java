@@ -54,6 +54,8 @@ public class Level implements Screen {
     private Label progressLabel, healthLabel, powerUpLabel, abilityLabel, tutorialLabel;
     static Texture blank;
     private Zombie originalBoss;
+    public boolean toCure = false; // Added to work with cure power up
+    public Float[] cureLocation = new Float[2]; // Added to work with cure power up
 
     /**
      * Constructor for the level
@@ -387,11 +389,28 @@ public class Level implements Screen {
         // When you die, end the level.
         if (player.health <= 0)
             gameOver();
-
+        
         //#changed:   Moved this zombie removal code here from the Zombie class
         for(int i = 0; i < aliveZombies.size(); i++) {
+        	
             Zombie zomb = aliveZombies.get(i);
             zomb.update(delta);
+            
+            // Added by Shaun of the Devs to cure zombies with power up
+            if (toCure) {
+            	if (!zomb.isBoss()) {
+            		if (Math.abs(zomb.getX() - cureLocation[0]) < 100) {
+            			if (Math.abs(zomb.getY() - cureLocation[1]) < 100) {
+            					zomb.switchType();
+            					zombiesRemaining--;
+            					aliveZombies.remove(zomb);
+            					nonZombies.add(zomb);
+            					toCure = false;
+            					break;
+            			}
+            		}
+            	}
+            }
             
             if (zomb.getHealth() <= 0) {
                 zombiesRemaining--;
@@ -449,7 +468,7 @@ public class Level implements Screen {
             //#changed:   Added code for the new power ups here
             if (currentPowerUp == null) {
 
-                int random = (int)(Math.random() * 5 + 1);
+                int random = (int)(Math.random() * 6 + 1);
                 switch(random) {
                     case 1:
                         currentPowerUp = new PowerUpHeal(this, player);
@@ -465,6 +484,9 @@ public class Level implements Screen {
                         break;
                     case 5:
                         currentPowerUp = new PowerUpInvisibility(this, player);
+                        break;
+                    case 6:
+                        currentPowerUp = new PowerUpCure(this, player);
                         break;
                 }
             }
