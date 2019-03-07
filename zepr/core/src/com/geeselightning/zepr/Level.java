@@ -288,12 +288,15 @@ public class Level implements Screen {
             for (Zombie nonZombie : nonZombies) {
             	attackable.add(nonZombie);
             }
-            if (player.isVisible()) {
+            if (player.isVisible() && !player.isZombie) {
             	attackable.add(player);
             }
     	} else {
             for (Zombie zombie : aliveZombies) {
             	attackable.add(zombie);
+            }
+            if (player.isVisible() && player.isZombie) {
+            	attackable.add(player);
             }
     	}
     	float closestDistance = 100000000; 
@@ -441,7 +444,7 @@ public class Level implements Screen {
         	//Changed by Shaun of the Devs to accomodate nonZombies
             zombie.closestAttackable = getClosestAttackable(true, zombie);
         		
-            if (player.isAttackReady())
+            if (player.isAttackReady() && !player.isZombie)
                 player.attack(zombie, delta);
             if(zombie.closestAttackable != null)
             	zombie.attack(zombie.closestAttackable, delta);
@@ -469,11 +472,13 @@ public class Level implements Screen {
             //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
             zombie.closestAttackable = getClosestAttackable(false, zombie);
         	
+            if (player.isAttackReady() && player.isZombie)
+                player.attack(zombie, delta);
             if(zombie.closestAttackable != null)
             	zombie.attack(zombie.closestAttackable, delta);
         }
 
-        if (zombiesRemaining == 0) {
+        if ((zombiesRemaining == 0 && !player.isZombie) || (survivors == 0 && player.isZombie)) {
 
             // Spawn a power up and the end of a wave, if there isn't already a powerUp on the level
             //#changed:   Added code for the new power ups here
@@ -503,7 +508,7 @@ public class Level implements Screen {
             }
 
 
-            if (currentWaveNumber > config.waves.length) {
+            if ((currentWaveNumber > config.waves.length) && zombiesRemaining == 0) {
                 // Level completed, back to select screen and complete stage.
                 isPaused = true;
                 
@@ -520,7 +525,16 @@ public class Level implements Screen {
                         saveGame();
                     }
                 }
-            } else {
+            } else if ((currentWaveNumber > config.waves.length) && survivors == 0) {
+                // Level completed, back to select screen and complete stage.
+                isPaused = true;
+                
+                for (Zombie nonZombie : nonZombies) {
+                	parent.score += 1;
+                }
+                
+                parent.setScreen(new TextScreen(parent, "York has been overrun by zombies!"));
+            }else {
                 if (currentWaveNumber < config.waves.length) {
                     // Update zombiesRemaining with the number of zombies of the new wave
                     zombiesRemaining = config.waves[currentWaveNumber].numberToSpawn;
