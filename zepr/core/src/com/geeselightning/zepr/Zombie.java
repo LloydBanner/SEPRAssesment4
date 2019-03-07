@@ -105,6 +105,7 @@ public class Zombie extends Character {
     	}
 
         health = maxhealth;
+        setMaxLinearSpeed(speed);
     }
     
     // Added by Shaun of the Devs

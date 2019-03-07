@@ -406,8 +406,6 @@ public class Level implements Screen {
             					zombiesRemaining--;
             					aliveZombies.remove(zomb);
             					nonZombies.add(zomb);
-            					toCure = false;
-            					break;
             			}
             		}
             	}
@@ -419,6 +417,7 @@ public class Level implements Screen {
                 zomb.dispose();
             }
         }
+		toCure = false;
 
         zombiesRemaining = aliveZombies.size();
 
@@ -496,6 +495,10 @@ public class Level implements Screen {
             if (currentWaveNumber > config.waves.length) {
                 // Level completed, back to select screen and complete stage.
                 isPaused = true;
+                
+                for (Zombie nonZombie : nonZombies) {
+                	parent.score += 1;
+                }
 
                 if (config.location == Zepr.Location.CONSTANTINE)
                     parent.setScreen(new TextScreen(parent, "Game completed."));
@@ -513,6 +516,7 @@ public class Level implements Screen {
                     nonZombiesToSpawn = config.nonZombieWaves[currentWaveNumber].numberToSpawn;
                 } else
                     zombiesRemaining = 0;
+                	
 
                 // Wave complete, increment wave number
                 currentWaveNumber++;

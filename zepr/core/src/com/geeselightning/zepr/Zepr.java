@@ -27,6 +27,8 @@ public class Zepr extends Game {
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
 	public static Location progress;
+	
+	public int score = 0;
 	/**
 	 * Method to change the currently active screen
 	 * @param screen the Location to set as active

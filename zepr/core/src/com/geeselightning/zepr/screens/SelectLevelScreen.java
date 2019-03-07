@@ -28,6 +28,7 @@ public class SelectLevelScreen implements Screen {
     private Stage stage;
     private Label stageDescription;
     private Label characterDescription;
+    private Label scoreDescription;
     private Location stageLink;
     private boolean playerSet = false;
 
@@ -95,6 +96,9 @@ public class SelectLevelScreen implements Screen {
         characterDescription.setAlignment(Align.center);
 
         // Adding menu bar.
+        // Score added by Shaun of the Devs
+        final String score = "Score: " + Integer.toString(parent.score);
+        scoreDescription = new Label(score, skin);
         Table menuBar = new Table();
         menuBar.setFillParent(true);
         //menuBar.setDebug(true); // Adds borders for the table.
@@ -105,6 +109,7 @@ public class SelectLevelScreen implements Screen {
         menuBar.add(back).pad(10);
         menuBar.add(save).pad(10);
         menuBar.add(load).pad(10);
+        menuBar.add(scoreDescription).pad(10);
 
         // Adding stage selector buttons.
         Table stageSelect = new Table();
