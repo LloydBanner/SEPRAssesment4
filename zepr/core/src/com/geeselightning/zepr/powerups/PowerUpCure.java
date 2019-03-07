@@ -12,6 +12,7 @@ import com.geeselightning.zepr.Player;
 public class PowerUpCure extends PowerUp {
 
 	private Level level;
+	private Player player;
 	
     /**
      * Constructor for the healing power up
@@ -21,6 +22,7 @@ public class PowerUpCure extends PowerUp {
     public PowerUpCure(Level currentLevel, Player player) {
         super(new Texture("cure.png"), currentLevel, player, 0, "Cure PowerUp Collected");
         level = currentLevel;
+        this.player = player;
     }
 
     /**
@@ -29,6 +31,10 @@ public class PowerUpCure extends PowerUp {
     @Override
     public void activate() {
         super.activate();
+        
+        if (player.isZombie) {
+        	player.switchType();
+        }
 
         //Done in level class
         level.toCure = true;

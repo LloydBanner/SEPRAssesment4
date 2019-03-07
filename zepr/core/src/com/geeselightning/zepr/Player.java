@@ -23,7 +23,7 @@ public class Player extends Character {
     private boolean attacking;
     boolean ability = true;
     boolean abilityUsed = false;
-    boolean isZombie = false; // Added to check if player is a zombie
+    public boolean isZombie = false; // Added to check if player is a zombie
     private long abilityCooldown;
     String abilityString;
 
