@@ -518,14 +518,27 @@ public class Level implements Screen {
                 backgroundMusic.stop();
                 isPaused = true;
                 
+                // Added to calculate new score
+                int newScore = 0;
+            	int possibleSurvivors = 0;
+            	for (Wave wave : config.nonZombieWaves) {
+            		possibleSurvivors += wave.numberToSpawn;
+            	}
                 for (Zombie nonZombie : nonZombies) {
-                	parent.score += 1;
+                	newScore += 1;
+                }
+                if (parent.levelScores[config.level] < newScore) {
+                	parent.levelScores[config.level] = newScore;
+                }
+                parent.score = 0;
+                for (int num : parent.levelScores) {
+                	parent.score += num;
                 }
 
                 if (config.location == Zepr.Location.CONSTANTINE)
                     parent.setScreen(new TextScreen(parent, "Game completed."));
                 else {
-                    parent.setScreen(new TextScreen(parent, "Level completed."));
+                    parent.setScreen(new TextScreen(parent, "Level completed. " + Integer.toString(survivors) + "/" + Integer.toString(possibleSurvivors) + " saved"));
                     if(Zepr.progress == config.location) {
                         Zepr.progress = Zepr.Location.values()[Zepr.progress.ordinal() + 1];
                         saveGame();
@@ -535,8 +548,21 @@ public class Level implements Screen {
                 // Level completed, back to select screen and complete stage.
                 isPaused = true;
                 
+                // Added to calculate new score
+                int newScore = 0;
+            	int possibleSurvivors = 0;
+            	for (Wave wave : config.nonZombieWaves) {
+            		possibleSurvivors += wave.numberToSpawn;
+            	}
                 for (Zombie nonZombie : nonZombies) {
-                	parent.score += 1;
+                	newScore += 1;
+                }
+                if (parent.levelScores[config.level] < newScore) {
+                	parent.levelScores[config.level] = newScore;
+                }
+                parent.score = 0;
+                for (int num : parent.levelScores) {
+                	parent.score += num;
                 }
                 
                 parent.setScreen(new TextScreen(parent, "York has been overrun by zombies!"));

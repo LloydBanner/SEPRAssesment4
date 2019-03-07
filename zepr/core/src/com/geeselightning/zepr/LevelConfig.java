@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 //#changed:   Added this class
 public class LevelConfig {
-	
+	int level;
 	String mapLocation;
     Vector2 playerSpawn;
     public Vector2 powerSpawn;

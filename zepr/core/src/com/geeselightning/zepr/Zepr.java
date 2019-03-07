@@ -28,6 +28,7 @@ public class Zepr extends Game {
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
 	public static Location progress;
 	
+	public int[] levelScores = new int[6];
 	public int score = 0;
 	/**
 	 * Method to change the currently active screen
@@ -52,6 +53,7 @@ public class Zepr extends Game {
 				break;
 			case TOWN:
 				config = new LevelConfig() {{
+					level = 0;
 					mapLocation = "maps/townmap.tmx";
 					playerSpawn = new Vector2(530, 600);
 					powerSpawn = new Vector2(300, 300);
@@ -74,6 +76,7 @@ public class Zepr extends Game {
 				break;
 			case HALIFAX:
 				config = new LevelConfig() {{
+					level = 1;
 					mapLocation = "maps/halifaxmap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(200, 200);
@@ -96,6 +99,7 @@ public class Zepr extends Game {
 				break;
 			case CENTRALHALL:
 				config = new LevelConfig() {{
+					level = 2;
 					mapLocation = "maps/centralhallmap.tmx";
 					playerSpawn = new Vector2(50, 900);
 					powerSpawn = new Vector2(250, 250);
@@ -118,6 +122,7 @@ public class Zepr extends Game {
 				break;
 			case COURTYARD:
 				config = new LevelConfig() {{
+					level = 3;
 					mapLocation = "maps/courtyard.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(150, 150);
@@ -142,6 +147,7 @@ public class Zepr extends Game {
 				break;
 			case GLASSHOUSE:
 				config = new LevelConfig() {{
+					level = 4;
 					mapLocation = "maps/glasshousemap.tmx";
 					playerSpawn = new Vector2(400, 70);
 					powerSpawn = new Vector2(250, 250);
@@ -164,6 +170,7 @@ public class Zepr extends Game {
 				break;
 			case CONSTANTINE:
 				config = new LevelConfig() {{
+					level = 5;
 					mapLocation = "maps/constantinemap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(250, 250);
