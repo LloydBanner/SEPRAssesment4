@@ -391,8 +391,13 @@ public class Level implements Screen {
         }
 
         // When you die, end the level.
-        if (player.health <= 0)
-            gameOver();
+        if (player.health <= 0) {
+        	if (player.isZombie) {
+                gameOver();
+        	} else {
+        		player.switchType();
+        	}
+        }
         
         //#changed:   Moved this zombie removal code here from the Zombie class
         for(int i = 0; i < aliveZombies.size(); i++) {
