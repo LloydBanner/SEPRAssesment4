@@ -23,11 +23,12 @@ public class Player extends Character {
     private boolean attacking;
     boolean ability = true;
     boolean abilityUsed = false;
+    boolean isZombie = false; // Added to check if player is a zombie
     private long abilityCooldown;
     String abilityString;
 
     //#changed:   Added this enum
-    public enum PlayerType { SPORTY, NERDY, ARTSY }
+    public enum PlayerType { SPORTY, NERDY, ARTSY, ZOMBIE1, ZOMBIE2, ZOMBIE3 }
 
     /**
      * Constructor for the player class
@@ -69,21 +70,45 @@ public class Player extends Character {
             speedMult = Constant.NERDYSPEEDMULT;
             mainTexture = new Texture("player01.png");
             attackTexture = new Texture("player01_attack.png");
-        }
-        else if (playertype == PlayerType.SPORTY) {
+            isZombie = false;
+        } else if (playertype == PlayerType.SPORTY) {
             dmgMult = Constant.SPORTYDMGMULT;
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
             mainTexture = new Texture("player02.png");
             attackTexture = new Texture("player02_attack.png");
-        }
-        else {
+            isZombie = false;
+        } else if (playertype == PlayerType.ARTSY) {
             //ARTSY player
             dmgMult = Constant.ARTSYDMGMULT;
             HPMult = Constant.ARTSYHPMULT;
             speedMult = Constant.ARTSYSPEEDMULT;
             mainTexture = new Texture("player03.png");
             attackTexture = new Texture("player03_attack.png");
+            isZombie = false;
+        } 
+        // Added by Shaun of the Devs to allow player to become a zombie
+        else if (playertype == PlayerType.ZOMBIE1) {
+            dmgMult = Constant.NERDYDMGMULT;
+            HPMult = Constant.NERDYHPMULT;
+            speedMult = Constant.NERDYSPEEDMULT;
+            mainTexture = new Texture("zombie01.png");
+            attackTexture = new Texture("zombie01.png");
+            isZombie = true;
+        } else if (playertype == PlayerType.ZOMBIE2) {
+            dmgMult = Constant.SPORTYDMGMULT;
+            HPMult = Constant.SPORTYHPMULT;
+            speedMult = Constant.SPORTYSPEEDMULT;
+            mainTexture = new Texture("zombie02.png");
+            attackTexture = new Texture("zombie02.png");
+            isZombie = true;
+        } else {
+            dmgMult = Constant.ARTSYDMGMULT;
+            HPMult = Constant.ARTSYHPMULT;
+            speedMult = Constant.ARTSYSPEEDMULT;
+            mainTexture = new Texture("zombie03.png");
+            attackTexture = new Texture("zombie03.png");
+            isZombie = true;
         }
 
         setTexture(mainTexture);
@@ -98,6 +123,38 @@ public class Player extends Character {
         
         isImmune = false;
         abilityUsed = false;
+    }
+    
+    /**
+     * Added by Shaun of the Devs to switch player between nonZombie and zombie
+     */
+    public void switchType() {
+    	switch (playertype) {
+			case NERDY:
+				setType(PlayerType.ZOMBIE1);
+				refreshAttributes();
+				break;
+    		case SPORTY:
+    			setType(PlayerType.ZOMBIE2);
+    			refreshAttributes();
+    			break;
+    		case ARTSY:
+    			setType(PlayerType.ZOMBIE1);
+    			refreshAttributes();
+    			break;
+			case ZOMBIE1:
+				setType(PlayerType.NERDY);
+				refreshAttributes();
+				break;
+    		case ZOMBIE2:
+    			setType(PlayerType.SPORTY);
+    			refreshAttributes();
+    			break;
+    		case ZOMBIE3:
+    			setType(PlayerType.ARTSY);
+    			refreshAttributes();
+    			break;
+    	}
     }
     
 

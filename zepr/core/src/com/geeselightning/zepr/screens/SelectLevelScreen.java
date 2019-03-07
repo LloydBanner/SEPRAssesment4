@@ -96,8 +96,8 @@ public class SelectLevelScreen implements Screen {
         characterDescription.setAlignment(Align.center);
 
         // Adding menu bar.
-        // Score added by Shaun of the Devs
-        final String score = "Score: " + Integer.toString(parent.score);
+        // Score added by Shaun of the Devs survivors
+        final String score = "Survivors: " + Integer.toString(parent.score);
         scoreDescription = new Label(score, skin);
         Table menuBar = new Table();
         menuBar.setFillParent(true);

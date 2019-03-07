@@ -47,12 +47,13 @@ public class Level implements Screen {
     private int zombiesRemaining; // the number of zombies left to kill to complete the wave
     private int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
     private int nonZombiesToSpawn; // Added by Shaun of the Devs for non zombie spawning
+    private int survivors = 0; // Added by Shaun of the Devs to display survivors for a scoring system
     private PowerUp currentPowerUp;
     //private Box2DDebugRenderer debugRenderer;
     private LevelConfig config;
     private World world;
     private int teleportCounter;
-    private Label progressLabel, healthLabel, powerUpLabel, abilityLabel, tutorialLabel;
+    private Label progressLabel, healthLabel, powerUpLabel, abilityLabel, tutorialLabel, survivorsLabel;
     static Texture blank;
     private Zombie originalBoss;
     public boolean toCure = false; // Added to work with cure power up
@@ -84,6 +85,7 @@ public class Level implements Screen {
         healthLabel = new Label("", skin);
         powerUpLabel = new Label("", skin);
         abilityLabel = new Label("", skin);
+        survivorsLabel = new Label("", skin); // Added by Shaun of the Devs to display number of nonZombies
          
         // Set up data for first wave of zombies
         this.zombiesRemaining = config.waves[0].numberToSpawn;
@@ -274,6 +276,8 @@ public class Level implements Screen {
         table.add(powerUpLabel).pad(10).left();
         table.row();
         table.add(abilityLabel).pad(10).left();
+        table.row();
+        table.add(survivorsLabel).pad(10).left();
         
         if(tutorialTable != null && currentWaveNumber == 1) {
         	tutorialTable.top();
@@ -289,12 +293,15 @@ public class Level implements Screen {
             for (Zombie nonZombie : nonZombies) {
             	attackable.add(nonZombie);
             }
-            if (player.isVisible()) {
+            if (player.isVisible() && !player.isZombie) {
             	attackable.add(player);
             }
     	} else {
             for (Zombie zombie : aliveZombies) {
             	attackable.add(zombie);
+            }
+            if (player.isVisible() && player.isZombie) {
+            	attackable.add(player);
             }
     	}
     	float closestDistance = 100000000; 
@@ -392,8 +399,13 @@ public class Level implements Screen {
         }
 
         // When you die, end the level.
-        if (player.health <= 0)
-            gameOver();
+        if (player.health <= 0) {
+        	if (player.isZombie) {
+                gameOver();
+        	} else {
+        		player.switchType();
+        	}
+        }
         
         //#changed:   Moved this zombie removal code here from the Zombie class
         for(int i = 0; i < aliveZombies.size(); i++) {
@@ -409,6 +421,7 @@ public class Level implements Screen {
             			if (Math.abs(zomb.getY() - cureLocation[1]) < 100) {
             					zomb.switchType();
             					zombiesRemaining--;
+            					survivors++;
             					aliveZombies.remove(zomb);
             					nonZombies.add(zomb);
             			}
@@ -436,7 +449,7 @@ public class Level implements Screen {
         	//Changed by Shaun of the Devs to accomodate nonZombies
             zombie.closestAttackable = getClosestAttackable(true, zombie);
         		
-            if (player.isAttackReady())
+            if (player.isAttackReady() && !player.isZombie)
                 player.attack(zombie, delta);
             if(zombie.closestAttackable != null)
             	zombie.attack(zombie.closestAttackable, delta);
@@ -450,6 +463,7 @@ public class Level implements Screen {
             if (zomb.getHealth() <= 0) {
             	zomb.health = zomb.maxhealth;
             	zomb.switchType();
+            	survivors--;
                 nonZombies.remove(zomb);
                 aliveZombies.add(zomb);
             }
@@ -463,11 +477,13 @@ public class Level implements Screen {
             //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
             zombie.closestAttackable = getClosestAttackable(false, zombie);
         	
+            if (player.isAttackReady() && player.isZombie)
+                player.attack(zombie, delta);
             if(zombie.closestAttackable != null)
             	zombie.attack(zombie.closestAttackable, delta);
         }
 
-        if (zombiesRemaining == 0) {
+        if ((zombiesRemaining == 0 && !player.isZombie) || (survivors == 0 && player.isZombie)) {
 
             // Spawn a power up and the end of a wave, if there isn't already a powerUp on the level
             //#changed:   Added code for the new power ups here
@@ -497,7 +513,7 @@ public class Level implements Screen {
             }
 
 
-            if (currentWaveNumber > config.waves.length) {
+            if ((currentWaveNumber > config.waves.length) && zombiesRemaining == 0) {
                 // Level completed, back to select screen and complete stage.
                 backgroundMusic.stop();
                 isPaused = true;
@@ -515,11 +531,21 @@ public class Level implements Screen {
                         saveGame();
                     }
                 }
-            } else {
+            } else if ((currentWaveNumber > config.waves.length) && survivors == 0) {
+                // Level completed, back to select screen and complete stage.
+                isPaused = true;
+                
+                for (Zombie nonZombie : nonZombies) {
+                	parent.score += 1;
+                }
+                
+                parent.setScreen(new TextScreen(parent, "York has been overrun by zombies!"));
+            }else {
                 if (currentWaveNumber < config.waves.length) {
                     // Update zombiesRemaining with the number of zombies of the new wave
                     zombiesRemaining = config.waves[currentWaveNumber].numberToSpawn;
                     nonZombiesToSpawn = config.nonZombieWaves[currentWaveNumber].numberToSpawn;
+                    survivors += nonZombiesToSpawn;
                 } else
                     zombiesRemaining = 0;
                 	
@@ -557,6 +583,7 @@ public class Level implements Screen {
         String healthString = ("Health: " + player.health + "HP");
         String abilityString;
         String powerUpString = PowerUp.activePowerUp;
+        String survivorsString = ("Survivors: " + Integer.toString(survivors)); // Added by Shaun of the Devs
 
         if(player.ability)
             abilityString = ("Press E to trigger special ability");
@@ -569,6 +596,7 @@ public class Level implements Screen {
         powerUpLabel.setText(powerUpString);
         healthLabel.setText(healthString);
         abilityLabel.setText(abilityString);
+        survivorsLabel.setText(survivorsString); // Added by Shaun of the Devs
 
         if(tutorialTable != null && currentWaveNumber == 1)
             tutorialLabel.setText("TUTORIAL WAVE \n\n Up: W \n Left: A \n Down: S \n Right: D \n Attack: Left Click \n Look: Mouse \n Special Ability: E");
