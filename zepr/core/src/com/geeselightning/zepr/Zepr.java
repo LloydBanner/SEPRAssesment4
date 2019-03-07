@@ -29,7 +29,9 @@ public class Zepr extends Game {
 	public static Location progress;
 	
 	public int[] levelScores = new int[6];
+	public int[] maxScores = new int[6];
 	public int score = 0;
+	public int maxScore = 0;
 	/**
 	 * Method to change the currently active screen
 	 * @param screen the Location to set as active

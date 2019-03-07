@@ -524,6 +524,7 @@ public class Level implements Screen {
             	for (Wave wave : config.nonZombieWaves) {
             		possibleSurvivors += wave.numberToSpawn;
             	}
+            	parent.maxScores[config.level] = possibleSurvivors;
                 for (Zombie nonZombie : nonZombies) {
                 	newScore += 1;
                 }
@@ -533,6 +534,10 @@ public class Level implements Screen {
                 parent.score = 0;
                 for (int num : parent.levelScores) {
                 	parent.score += num;
+                }
+                parent.maxScore = 0;
+                for (int num : parent.maxScores) {
+                	parent.maxScore += num;
                 }
 
                 if (config.location == Zepr.Location.CONSTANTINE)
@@ -554,6 +559,7 @@ public class Level implements Screen {
             	for (Wave wave : config.nonZombieWaves) {
             		possibleSurvivors += wave.numberToSpawn;
             	}
+            	parent.maxScores[config.level] = possibleSurvivors;
                 for (Zombie nonZombie : nonZombies) {
                 	newScore += 1;
                 }
@@ -563,6 +569,10 @@ public class Level implements Screen {
                 parent.score = 0;
                 for (int num : parent.levelScores) {
                 	parent.score += num;
+                }
+                parent.maxScore = 0;
+                for (int num : parent.maxScores) {
+                	parent.maxScore += num;
                 }
                 
                 parent.setScreen(new TextScreen(parent, "York has been overrun by zombies!"));
