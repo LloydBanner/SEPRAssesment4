@@ -44,7 +44,6 @@ public class PowerUp extends Sprite {
     public void activate(){
         timeRemaining = effectDuration;
         active = true;
-        this.getTexture().dispose();
         activePowerUp = powerUpString;
     }
 

@@ -178,7 +178,7 @@ public class Level implements Screen {
             } else {
             	nonZombies.add(zombie);
             }
-            if(type == Zombie.Type.BOSS2 && aliveZombies.size()==1)
+            if(type == Zombie.Type.BOSS2)
                 originalBoss = zombie;
         }
     }
