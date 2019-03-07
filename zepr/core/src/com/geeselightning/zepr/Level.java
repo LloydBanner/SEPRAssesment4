@@ -2,6 +2,7 @@ package com.geeselightning.zepr;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -56,6 +57,7 @@ public class Level implements Screen {
     private Zombie originalBoss;
     public boolean toCure = false; // Added to work with cure power up
     public Float[] cureLocation = new Float[2]; // Added to work with cure power up
+    private Music backgroundMusic;
 
     /**
      * Constructor for the level
@@ -64,7 +66,6 @@ public class Level implements Screen {
      * #changed:   Moved most of the code from show() to here
      */
     public Level(Zepr zepr, LevelConfig config) {
-
         //Initialise Box2D physics engine
     	this.world =  new World(new Vector2(0, 0), true);
     	
@@ -203,6 +204,7 @@ public class Level implements Screen {
      */
     private void pauseGame() {
         isPaused = true;
+        backgroundMusic.pause();
         // Input processor has to be changed back once unpaused.
         Gdx.input.setInputProcessor(stage);
 
@@ -260,6 +262,9 @@ public class Level implements Screen {
      */
     private void resumeGame() {
         isPaused = false;
+		backgroundMusic = config.backgroundMusic;
+    	backgroundMusic.setLooping(true);
+		backgroundMusic.play();
         table.clear();
         table.top().left();
         table.add(progressLabel).pad(10).left();
@@ -494,6 +499,7 @@ public class Level implements Screen {
 
             if (currentWaveNumber > config.waves.length) {
                 // Level completed, back to select screen and complete stage.
+                backgroundMusic.stop();
                 isPaused = true;
                 
                 for (Zombie nonZombie : nonZombies) {

@@ -1,6 +1,8 @@
 package com.geeselightning.zepr;
 
 import java.util.ArrayList;
+
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 
 //#changed:   Added this class
@@ -17,4 +19,5 @@ public class LevelConfig {
     // nonZombie info added by Shaun of the Devs
 	ArrayList<Vector2> nonZombieSpawnPoints;
 	Wave[] nonZombieWaves;
+	Music backgroundMusic;
 }

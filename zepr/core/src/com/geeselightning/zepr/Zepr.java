@@ -55,6 +55,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/townmap.tmx";
 					playerSpawn = new Vector2(530, 600);
 					powerSpawn = new Vector2(300, 300);
+					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("town.mp3"));
 					zombieSpawnPoints = new ArrayList<>(
 				            Arrays.asList(new Vector2(200,200), new Vector2(700,700),
 				                    new Vector2(200,700), new Vector2(700,200)));
@@ -76,6 +77,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/halifaxmap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(200, 200);
+					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("halifax.mp3")); 
 					zombieSpawnPoints = new ArrayList<>(
 							Arrays.asList(new Vector2(600,100), new Vector2(100,200),
 				                    new Vector2(600,500), new Vector2(100,600)));
@@ -97,6 +99,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/centralhallmap.tmx";
 					playerSpawn = new Vector2(50, 900);
 					powerSpawn = new Vector2(250, 250);
+					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("constantine.mp3"));
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
@@ -118,6 +121,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/courtyard.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(150, 150);
+					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("courtyard.mp3"));
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
@@ -141,6 +145,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/glasshousemap.tmx";
 					playerSpawn = new Vector2(400, 70);
 					powerSpawn = new Vector2(250, 250);
+					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("glasshouse.mp3"));
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,200), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
@@ -162,6 +167,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/constantinemap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(250, 250);
+					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("constantine.mp3"));
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
