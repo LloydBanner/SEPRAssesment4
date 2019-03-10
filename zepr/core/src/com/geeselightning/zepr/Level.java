@@ -608,7 +608,7 @@ public class Level implements Screen {
                 aliveZombies.add(new Zombie(new Vector2(200,200), world, Zombie.Type.BOSS2));
             for (Zombie boss : aliveZombies) {
                 Vector2 start = boss.getPhysicsPosition();
-                Vector2 end =  player.getPhysicsPosition();
+                Vector2 end =  boss.closestAttackable.getPhysicsPosition();
                 Vector2 position = new Vector2((start.x + end.x)/2, (start.y + end.y)/2);
                 boss.setCharacterPosition(position);
             }
