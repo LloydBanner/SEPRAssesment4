@@ -39,7 +39,7 @@ public class Player extends Character {
      */
     public Player(Texture texture, Vector2 playerSpawn, World world) {
         super(world);
-
+    	
         set(new Sprite(texture));
 
         body.setFixedRotation(true);
@@ -93,21 +93,21 @@ public class Player extends Character {
             HPMult = Constant.NERDYHPMULT;
             speedMult = Constant.NERDYSPEEDMULT;
             mainTexture = new Texture("zombie01.png");
-            attackTexture = new Texture("zombie01.png");
+            attackTexture = new Texture("zombie01_attack.png");
             isZombie = true;
         } else if (playertype == PlayerType.ZOMBIE2) {
             dmgMult = Constant.SPORTYDMGMULT;
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
             mainTexture = new Texture("zombie02.png");
-            attackTexture = new Texture("zombie02.png");
+            attackTexture = new Texture("zombie02_attack.png");
             isZombie = true;
         } else {
             dmgMult = Constant.ARTSYDMGMULT;
             HPMult = Constant.ARTSYHPMULT;
             speedMult = Constant.ARTSYSPEEDMULT;
             mainTexture = new Texture("zombie03.png");
-            attackTexture = new Texture("zombie03.png");
+            attackTexture = new Texture("zombie03_attack.png");
             isZombie = true;
         }
 

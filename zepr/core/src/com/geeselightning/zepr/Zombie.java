@@ -12,6 +12,8 @@ public class Zombie extends Character {
     public Character closestAttackable = Level.getPlayer();
     public enum Type { ZOMBIE1, ZOMBIE2, ZOMBIE3, NONZOMBIE1, NONZOMBIE2, NONZOMBIE3, BOSS1, BOSS2 }
     private Type currentType;
+    private Texture normalTexture;
+    private Texture attackTexture;
 
     /**
      * Constructor for the Zombie class
@@ -49,49 +51,56 @@ public class Zombie extends Character {
     			attackDamage *= 1;
     			maxhealth *= 1;
     			isZombie = true;
-    			setTexture(new Texture("zombie01.png"));
+    			normalTexture = new Texture("zombie01.png");
+    			attackTexture = new Texture("zombie01_attack.png");
     			break;
     		case ZOMBIE2:
     			speed *= 1.2f;
     			attackDamage *= 2;
     			maxhealth *= 2;
     			isZombie = true;
-    			setTexture(new Texture("zombie02.png"));
+    			normalTexture = new Texture("zombie02.png");
+    			attackTexture = new Texture("zombie02_attack.png");
     			break;
     		case ZOMBIE3:
     			speed *= 2;
     			attackDamage *= 3;
     			maxhealth *= 1;
     			isZombie = true;
-    			setTexture(new Texture("zombie03.png"));
+    			normalTexture = new Texture("zombie03.png");
+    			attackTexture = new Texture("zombie03_attack.png");
     			break;
     		case NONZOMBIE1:
     			speed *= 1;
     			attackDamage *= 1;
     			maxhealth *= 0.5;
     			isZombie = false;
-    			setTexture(new Texture("player01.png"));
+    			normalTexture = new Texture("player01.png");
+    			attackTexture = new Texture("player01.png");
         		break;
     		case NONZOMBIE2:
     			speed *= 1.2f;
     			attackDamage *= 2;
     			maxhealth *= 1;
     			isZombie = false;
-    			setTexture(new Texture("player02.png"));
+    			normalTexture = new Texture("player02.png");
+    			attackTexture = new Texture("player02.png");
     			break;
     		case NONZOMBIE3:
     			speed *= 2;
     			attackDamage *= 3;
     			maxhealth *= 0.5;
     			isZombie = false;
-    			setTexture(new Texture("player03.png"));
+    			normalTexture = new Texture("player02.png");
+    			attackTexture = new Texture("player02.png");
     			break;
             case BOSS1:
                 speed *= 100;
                 attackDamage *= 2;
                 maxhealth *= 5;
                 isZombie = true;
-                setTexture(new Texture("GeeseLightningBoss.png"));
+                normalTexture = new Texture("GeeseLightningBoss.png");
+                attackTexture = new Texture("GeeseLightningBoss.png");
                 setScale(2);
                 break;
             case BOSS2:
@@ -99,7 +108,8 @@ public class Zombie extends Character {
                 attackDamage *= 1;
                 maxhealth *= 5;
                 isZombie = true;
-                setTexture(new Texture("JJBossZombie.png"));
+                normalTexture = new Texture("JJBossZombie.png");
+                attackTexture = new Texture("JJBossZombie_attack.png");
                 setScale(2);
                 break;
     	}
@@ -171,6 +181,17 @@ public class Zombie extends Character {
     public void update(float delta) {
         //move according to velocity
         super.update(delta);
+        
+        // Added by Shaun of the Devs for attack period, gives player more feedback on attacks
+        if (hitRefresh > Constant.ZOMBIEHITCOOLDOWN) {
+        	setTexture(attackTexture);
+        } else {
+        	setTexture(normalTexture);
+        }
+        
+        if (hitRefresh > Constant.ZOMBIECOOLDOWNRESET) {
+        	hitRefresh = 0;
+        }
 
         if ((closestAttackable != null) && isZombie) {
             // seek out player using gdx-ai seek functionality
