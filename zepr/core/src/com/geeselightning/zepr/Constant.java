@@ -14,8 +14,8 @@ public final class Constant {
     public static final int ZOMBIEMAXHP = 100;
     public static final int ZOMBIEDMG = 5;
     public static final int ZOMBIERANGE = 30;
-    public static final float ZOMBIEHITCOOLDOWN = 1;
-    public static final float ZOMBIECOOLDOWNRESET = 2.5f; // Added to allow attack period
+    public static final float ZOMBIEHITCOOLDOWN = 2;
+    public static final float ZOMBIECOOLDOWNRESET = 3; // Added to allow attack period
     public static final float NERDYHPMULT = 1.5f;
     public static final float NERDYDMGMULT = 1;
     public static final float NERDYSPEEDMULT = 1;
