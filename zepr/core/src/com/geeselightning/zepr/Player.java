@@ -139,7 +139,7 @@ public class Player extends Character {
     			refreshAttributes();
     			break;
     		case ARTSY:
-    			setType(PlayerType.ZOMBIE1);
+    			setType(PlayerType.ZOMBIE3);
     			refreshAttributes();
     			break;
 			case ZOMBIE1:
