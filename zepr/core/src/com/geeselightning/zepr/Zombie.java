@@ -30,6 +30,8 @@ public class Zombie extends Character {
         attackDamage = Constant.ZOMBIEDMG;
         maxhealth = Constant.ZOMBIEMAXHP;
         currentType = type;
+        
+        hitRefresh = (float) Math.random(); // Added to prevent all zombies from attacking at the same time
 
 		set(new Sprite(new Texture("zombie01.png")));
         setType();
