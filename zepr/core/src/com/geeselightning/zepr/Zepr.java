@@ -105,7 +105,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/centralhallmap.tmx";
 					playerSpawn = new Vector2(50, 900);
 					powerSpawn = new Vector2(250, 250);
-					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("constantine.mp3"));
+					backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("central.mp3"));
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));

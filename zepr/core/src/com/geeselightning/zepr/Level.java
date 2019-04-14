@@ -59,6 +59,7 @@ public class Level implements Screen {
     public boolean toCure = false; // Added to work with cure power up
     public Float[] cureLocation = new Float[2]; // Added to work with cure power up
     private Music backgroundMusic;
+    private Boolean wind;
 
     /**
      * Constructor for the level
@@ -400,10 +401,15 @@ public class Level implements Screen {
 
         // When you die, end the level.
         if (player.health <= 0) {
+        	backgroundMusic.stop();
+        	
         	if (player.isZombie) {
                 gameOver();
         	} else {
+        		wind = true;
         		player.switchType();
+        		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("wind.mp3"));
+        		backgroundMusic.play();
         	}
         }
         
@@ -419,6 +425,11 @@ public class Level implements Screen {
             	if (!zomb.isBoss()) {
             		if (Math.abs(zomb.getX() - cureLocation[0]) < 100) {
             			if (Math.abs(zomb.getY() - cureLocation[1]) < 100) {
+            					if(wind){
+            						backgroundMusic.stop();
+            						backgroundMusic = config.backgroundMusic;
+            		        		backgroundMusic.play();
+            					}
             					zomb.switchType();
             					zombiesRemaining--;
             					survivors++;
@@ -551,6 +562,7 @@ public class Level implements Screen {
                 }
             } else if ((currentWaveNumber > config.waves.length) && survivors == 0) {
                 // Level completed, back to select screen and complete stage.
+            	backgroundMusic.stop();
                 isPaused = true;
                 
                 // Added to calculate new score

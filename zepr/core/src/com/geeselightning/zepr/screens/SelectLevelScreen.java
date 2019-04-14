@@ -3,6 +3,7 @@ package com.geeselightning.zepr.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Color;
 import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zepr;
@@ -31,6 +34,9 @@ public class SelectLevelScreen implements Screen {
     private Label scoreDescription;
     private Location stageLink;
     private boolean playerSet = false;
+    private OrthographicCamera camera;
+    private Viewport viewport;
+
 
     /**
      * Constructor for the select level screen
@@ -41,9 +47,16 @@ public class SelectLevelScreen implements Screen {
     public SelectLevelScreen(Zepr zepr) {
 
         parent = zepr;
+        
+        // Added by Shaun of the Devs to correct the resizing of screen
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(1366, 768, camera);
+        viewport.apply();
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.update();
 
         // The stage is the controller which will react to inputs from the user.
-        this.stage = new Stage(new ScreenViewport());
+        this.stage = new Stage(viewport);
 
         // Send any input from the user to the stage.
         Gdx.input.setInputProcessor(stage);

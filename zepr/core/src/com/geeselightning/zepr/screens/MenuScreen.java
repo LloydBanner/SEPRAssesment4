@@ -3,6 +3,7 @@ package com.geeselightning.zepr.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -10,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.geeselightning.zepr.Zepr;
 
 public class MenuScreen implements Screen {
@@ -18,6 +21,8 @@ public class MenuScreen implements Screen {
     private Zepr parent;
     private Stage stage;
     private Label titleLabel;
+    private OrthographicCamera camera;
+    private Viewport viewport;
 
     /**
      * Constructor for the menu screen
@@ -27,9 +32,16 @@ public class MenuScreen implements Screen {
         // Constructor builds the gui of the menu screen.
         // parent allows the MenuScreen to reference the MyGdxGame class.
         parent = zepr;
+        
+        // Added by Shaun of the Devs to correct the resizing of screen
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(1366, 768, camera);
+        viewport.apply();
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.update();
 
         // The stage is the controller which will react to inputs from the user.
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(viewport);
 
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
