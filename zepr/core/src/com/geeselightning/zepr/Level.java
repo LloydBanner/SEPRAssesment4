@@ -59,7 +59,7 @@ public class Level implements Screen {
     public boolean toCure = false; // Added to work with cure power up
     public Float[] cureLocation = new Float[2]; // Added to work with cure power up
     private Music backgroundMusic;
-    private Boolean wind;
+    private Boolean wind = false;
 
     /**
      * Constructor for the level
@@ -552,7 +552,7 @@ public class Level implements Screen {
                 }
 
                 if (config.location == Zepr.Location.CONSTANTINE)
-                    parent.setScreen(new TextScreen(parent, "Game completed."));
+                    parent.setScreen(new TextScreen(parent, "Game completed. " + Integer.toString(parent.score) + "/" + Integer.toString(parent.maxScore) + " saved"));
                 else {
                     parent.setScreen(new TextScreen(parent, "Level completed. " + Integer.toString(survivors) + "/" + Integer.toString(possibleSurvivors) + " saved"));
                     if(Zepr.progress == config.location) {
